@@ -3,10 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { Button, Image, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { H1, H2, H3, H4, H5, H6, Heading, XStack,  Paragraph,  ScrollView } from 'tamagui'
+import { useUserQuery } from '../../hooks';
 
 
 export default function TabTwoScreen() {
-
+    const { data, isLoading, isError, error } = useUserQuery()
+    if (isLoading) {
+      return <Text>Loading...</Text>
+    }
+    if (isError) {
+      return <Text>Error: {error?.message}</Text>
+    }
     const [image, setImage] = useState(null);
 
     const openCamera = async () => {
@@ -46,7 +53,7 @@ export default function TabTwoScreen() {
 
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <H4>Hey Mason,</H4>
+                <H4>Hey {data?.name},</H4>
                 <H2>Let's get packed!</ H2>
                 <Button title="Pick an image from camera roll" onPress={openCamera} />
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}

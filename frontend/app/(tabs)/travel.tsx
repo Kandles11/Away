@@ -3,16 +3,24 @@ import { H1, H2, H3, H4, H5, H6, Heading, XStack, Image, Paragraph, Button, Scro
 import { Card } from 'tamagui'
 import type { CardProps } from 'tamagui'
 import { Link, Tabs } from 'expo-router'
+import { useUserQuery } from '../../hooks'
 
 
 
 
 export default function TabTwoScreen() {
+    const { data, isLoading, isError, error } = useUserQuery()
+  if (isLoading) {
+    return <Text>Loading...</Text>
+  }
+  if (isError) {
+    return <Text>Error: {error?.message}</Text>
+  }
     return (
         <View flex={1} alignItems='center'>
             <YStack alignItems="center" margin={5}>
                 <YStack alignItems="left">
-                    <H4>Hey Mason,</H4>
+                    <H4>Hey {data?.name},</H4>
                     <H2>Let's Travel!</ H2>
                 </YStack>
             </YStack>

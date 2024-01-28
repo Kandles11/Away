@@ -3,11 +3,12 @@ import { APIClient } from './generated/client/APIClient';
 import { create } from 'zustand'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router';
+import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = new APIClient()
 
-// TODO: figure out zustand store persistence
-// TODO: use react query for all data fetching
+// TODO: add axios intercepter, clear tokens on a 401?
 const initialState = {
     accessToken: undefined as Token | undefined,
     refreshToken: undefined as Token | undefined,
@@ -20,13 +21,17 @@ console.log({api})
 
 type State = typeof initialState
 
-export const useAppStore = create<State>((set) => (initialState))
+export const useAppStore = create<State>()(persist(
+    () => initialState, {
+    storage: createJSONStorage(() => AsyncStorage),
+    name: 'away-state-storage',
+    version: 1,
+}))
 
 const getToken = async () => {
-    console.log("getToken")
-    const vallue = useAppStore.getState().accessToken?.token || ''
-    console.log(vallue)
-    return Promise.resolve(vallue)
+    const value = useAppStore.getState().accessToken?.token || ''
+    console.log("getToken", { value })
+    return Promise.resolve(value)
 };
 
 const clearToken = () => {

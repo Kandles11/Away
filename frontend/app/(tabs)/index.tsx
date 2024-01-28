@@ -4,9 +4,17 @@ import { Card } from 'tamagui'
 import type { CardProps } from 'tamagui'
 import { Pressable } from 'react-native'
 import { Link, Tabs } from 'expo-router'
+import { useUserQuery } from '../../hooks'
 
 
 export default function TabOneScreen() {
+  const { data, isLoading, isError, error } = useUserQuery()
+  if (isLoading) {
+    return <Text>Loading...</Text>
+  }
+  if (isError) {
+    return <Text>Error: {error?.message}</Text>
+  }
   return (
     <View flex={1} alignItems="center" justifyContent='center'>
       <ScrollView  >
@@ -14,7 +22,7 @@ export default function TabOneScreen() {
         <YStack alignItems="center" margin={5}>
           <YStack alignItems="left">
             <H4>Welcome,</H4>
-            <H2>Mason Thomas!</ H2>
+            <H2>{data?.name}!</ H2>
           </YStack>
         </YStack>
 
