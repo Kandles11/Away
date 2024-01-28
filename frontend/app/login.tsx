@@ -22,6 +22,8 @@ export default function NotFoundScreen() {
       overflow="hidden"
      
     >
+      {register.isError && <Text>Error: {register.error?.message}</Text>}
+      {register.isPending && <Text>Loading....</Text>}
       <Input flex={1} value={name} onChangeText={(e)=>setUsername(e)} placeholder={`Username`} />
       <Input flex={1} value={email} onChangeText={(e)=>setEmail(e)} placeholder={`Email`} />
       <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} />

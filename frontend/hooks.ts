@@ -41,7 +41,11 @@ export const hasValidToken = () => {
     }
 
     const valid = new Date(token.expires) > new Date()
-    if (!valid) clearToken()
+    if (!valid) {
+        console.log("Clearing expired token")
+        clearToken()
+        console.log("Cleared expired token")
+    }
     return valid
 }
 
