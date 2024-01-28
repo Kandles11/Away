@@ -1,11 +1,16 @@
-import { Link, Tabs } from 'expo-router'
+import { Link, Redirect, Tabs } from 'expo-router'
 import { Pressable } from 'react-native'
 import { Text } from 'tamagui'
 import { Home, Plane, ScanBarcode, Luggage, UserCircle2} from '@tamagui/lucide-icons'
 import { YStack } from 'tamagui'
+import { hasValidToken } from '../../hooks'
 
 
 export default function TabLayout() {
+  if (!hasValidToken()) {
+    console.log("Redirecting to login")
+    return <Redirect href='/login' />
+  }
   return (
     <Tabs
       screenOptions={{
