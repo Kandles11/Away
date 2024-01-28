@@ -3,8 +3,8 @@ import { H1, H2, H3, H4, H5, H6, Heading, XStack, Image, Paragraph, Button, Scro
 import { Card } from 'tamagui'
 import type { CardProps } from 'tamagui'
 import { Pressable } from 'react-native'
-import { Link, Tabs } from 'expo-router'
-import { getUserBaggage, useUserQuery } from '../../hooks'
+import { Link, Tabs, router } from 'expo-router'
+import { clearToken, getUserBaggage, useUserQuery } from '../../hooks'
 import { Baggage } from '../../generated/client'
 
 
@@ -15,7 +15,12 @@ export default function TabOneScreen() {
     return <Text>Loading...</Text>
   }
   if (isError) {
-    return <Text>Error: {error?.message}</Text>
+    <><Text>Error: {error?.message}</Text>
+    <Button onPress={()=>{
+      clearToken()
+      router.push("/login")
+    }}><Text>Sign Out</Text></Button>
+    </>
   }
 
   if (baggageIsLoading) {

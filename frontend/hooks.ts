@@ -72,7 +72,7 @@ const getToken = async () => {
     return Promise.resolve(value)
 };
 
-const clearToken = () => {
+export const clearToken = () => {
     console.log("clearToken")
     useAppStore.setState({ accessToken: undefined, refreshToken: undefined, user: undefined, lastUpdated: undefined })
 }
