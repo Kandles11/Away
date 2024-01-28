@@ -10,12 +10,26 @@ const specs = swaggerJsdoc({
   apis: ['src/docs/*.yml', 'src/routes/v1/*.js'],
 });
 
-router.use('/', swaggerUi.serve);
-router.get(
-  '/',
-  swaggerUi.setup(specs, {
-    explorer: true,
-  })
-);
+console.log("Writing spec")
+const OpenAPI = require('openapi-typescript-codegen')
+OpenAPI.generate({
+  input: specs,
+  output: '../generated/client',
+  httpClient: 'axios',
+  useOptions: true,
+  useUnionTypes: true,
+  clientName: 'APIClient',
+}).then(()=>{
+  console.log("Done writing spec")
+
+  router.use('/', swaggerUi.serve);
+  router.get(
+    '/',
+    swaggerUi.setup(specs, {
+      explorer: true,
+    })
+  );
+})
+
 
 module.exports = router;
