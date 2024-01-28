@@ -8,6 +8,10 @@ import { TamaguiProvider } from 'tamagui'
 import { config } from '../tamagui.config'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,6 +25,8 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+const queryClient = new QueryClient()
 
 export default function RootLayout() {
   const [interLoaded, interError] = useFonts({
@@ -48,10 +54,12 @@ function RootLayoutNav() {
   return (
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
+        <QueryClientProvider client={queryClient}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </QueryClientProvider>
       </ThemeProvider>
     </TamaguiProvider>
   )
