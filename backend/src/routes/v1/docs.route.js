@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDefinition = require('../../docs/swaggerDef');
@@ -12,16 +11,25 @@ const specs = swaggerJsdoc({
 });
 
 console.log("Writing spec")
-fs.writeFileSync('../generated/swagger.json', JSON.stringify(specs, null, 2));
-console.log("Done writing spec")
+const OpenAPI = require('openapi-typescript-codegen')
+OpenAPI.generate({
+  input: specs,
+  output: '../generated/client',
+  httpClient: 'axios',
+  useOptions: true,
+  useUnionTypes: true,
+  clientName: 'APIClient',
+}).then(()=>{
+  console.log("Done writing spec")
 
+  router.use('/', swaggerUi.serve);
+  router.get(
+    '/',
+    swaggerUi.setup(specs, {
+      explorer: true,
+    })
+  );
+})
 
-router.use('/', swaggerUi.serve);
-router.get(
-  '/',
-  swaggerUi.setup(specs, {
-    explorer: true,
-  })
-);
 
 module.exports = router;

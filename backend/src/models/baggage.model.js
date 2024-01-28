@@ -7,11 +7,6 @@ const baggageSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  //   userID: {
-  //     type: mongoose.Schema.Types.ObjectID,
-  //     required: true,
-  //     trim: true,
-  //   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   claimed: {
     type: Boolean,
