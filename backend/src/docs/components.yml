@@ -18,7 +18,22 @@ components:
         email: fake@example.com
         name: fake name
         role: user
-
+    Baggage:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        tagData:
+          type: string
+        claimed:
+          type: boolean
+      example:
+        id: 5ebac534954b54139806c113
+        user: 5ebac534954b54139806c112
+        tagData: tag123
+        claimed: false
     Token:
       type: object
       properties:

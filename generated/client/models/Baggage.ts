@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Token } from './Token';
-export type AuthTokens = {
-    access?: Token;
-    refresh?: Token;
+export type Baggage = {
+    id?: string;
+    user?: string;
+    tagData?: string;
+    claimed?: boolean;
 };
 
