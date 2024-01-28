@@ -37,13 +37,13 @@ export default function NotFoundScreen() {
       overflow="hidden"
      
     >
-      {register.isError && <Text>Error: {register.error?.message}</Text>}
+      {register.isError && <Text>Registration Error: {register.error?.message}</Text>}
+      {login.isError && <Text>Login Error: {login.error?.message}</Text>}
       {register.isPending && <Text>Loading....</Text>}
-      {}
-      <ToggleGroup loop={false} disableDeactivation defaultValue={INITIAL_AUTH_TYPE} value={currentAuthType} onValueChange={(d)=>{
+      {login.isPending && <Text>Registering....</Text>}
+      <ToggleGroup disableDeactivation defaultValue={INITIAL_AUTH_TYPE} value={currentAuthType} onValueChange={(d)=>{
         console.log({d})
-        const v = d
-        setCurrentAuthType(v as any)}
+        setCurrentAuthType(d as any)}
         } type="single">
       <ToggleGroup.Item value={AuthType.LOGIN}><Text>Login</Text></ToggleGroup.Item>
       <ToggleGroup.Item value={AuthType.REGISTER}><Text>Register</Text></ToggleGroup.Item>
