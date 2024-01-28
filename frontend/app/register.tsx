@@ -2,39 +2,39 @@ import { Link, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { View, Text, Form, Input, YStack, Button, ToggleGroup, Select } from 'tamagui'
-import { useLoginMutation } from '../hooks'
+import { useRegisterMutation } from '../hooks'
 
-export default function NotFoundScreen() {
+export default function RegisterScreen() {
   const [email, setEmail] = useState('')
+  const [name, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const login = useLoginMutation()
+  const register = useRegisterMutation()
+  
   return (
     <>
-      <Stack.Screen options={{ title: 'Login!' }} />
+      <Stack.Screen options={{ title: 'Register' }} />
       <View margin={10}>
       <Form onSubmit={()=>{
-        console.log({ email})
-          login.mutate({requestBody:{ email, password}})
+        console.log({ email, name})
+        register.mutate({requestBody:{name, email, password}})
       }}>
       <YStack
       minHeight={250}
       overflow="hidden"
      
     >
-      {login.isError && <Text>Login Error: {login.error?.message}</Text>}
-      {login.isPending && <Text>Logging in....</Text>}
+      {register.isError && <Text>Registration Error: {register.error?.message}</Text>}
+      {register.isPending && <Text>Registering....</Text>}
+      
+      <Input flex={1} value={name} autoComplete='given-name' onChangeText={(e)=>setUsername(e)} placeholder={`Username`} />
       <Input flex={1} value={email} onChangeText={(e)=>setEmail(e)} autoComplete='email' placeholder={`Email`} />
-      <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} autoComplete={'current-password'} secureTextEntry />
+      <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} autoComplete={'new-password'} secureTextEntry />
       <Form.Trigger asChild>
-        <Button >Continue</Button>
+        <Button >Register</Button>
       </Form.Trigger>
       </YStack>
     </Form>
-    <Link href="/register" asChild>
-    <Button>
-      Switch to Register
-    </Button>
-      </Link>
+    <Link href="/login">Switch to Login</Link>
       </View>
     </>
   )
