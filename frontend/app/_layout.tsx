@@ -2,7 +2,7 @@ import '../tamagui.css'
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { SplashScreen, Stack } from 'expo-router'
-import { useColorScheme } from 'react-native'
+import { useColorScheme, AppState, Platform } from 'react-native'
 import { TamaguiProvider } from 'tamagui'
 
 import { config } from '../tamagui.config'
@@ -11,7 +11,12 @@ import { useEffect } from 'react'
 import {
   QueryClient,
   QueryClientProvider,
+  focusManager,
+  onlineManager
 } from '@tanstack/react-query'
+import type { AppStateStatus } from 'react-native'
+import NetInfo from '@react-native-community/netinfo'
+import { useAppStore } from '../hooks'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,6 +33,19 @@ SplashScreen.preventAutoHideAsync()
 
 const queryClient = new QueryClient()
 
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== 'web') {
+    focusManager.setFocused(status === 'active')
+  }
+}
+
+
+onlineManager.setEventListener((setOnline) => {
+  return NetInfo.addEventListener((state) => {
+    setOnline(!!state.isConnected)
+  })
+})
+
 export default function RootLayout() {
   const [interLoaded, interError] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
@@ -41,15 +59,29 @@ export default function RootLayout() {
     }
   }, [interLoaded, interError])
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', onAppStateChange)
+  
+    return () => subscription.remove()
+  }, [])
+
   if (!interLoaded && !interError) {
     return null
   }
+
 
   return <RootLayoutNav />
 }
 
 function RootLayoutNav() {
+  const hasHydrated = useAppStore(state => state._hasHydrated);
+  
   const colorScheme = useColorScheme()
+
+  if (!hasHydrated) {
+    return <p>Loading...</p>
+  }
+
 
   return (
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>

@@ -22,7 +22,10 @@ const getUsers = {
 
 const getUser = {
   params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
+    userId: Joi.alternatives().try(
+      Joi.string().custom(objectId), // Your custom objectId validator
+      Joi.string().valid('me') // Explicitly allow the string 'me'
+    )
   }),
 };
 
