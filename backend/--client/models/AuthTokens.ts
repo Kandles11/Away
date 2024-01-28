@@ -2,10 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type User = {
-    id?: string;
-    email?: string;
-    name?: string;
-    role?: 'user' | 'admin';
+import type { Token } from './Token';
+export type AuthTokens = {
+    access?: Token;
+    refresh?: Token;
 };
 

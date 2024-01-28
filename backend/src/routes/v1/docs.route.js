@@ -11,7 +11,10 @@ const specs = swaggerJsdoc({
   apis: ['src/docs/*.yml', 'src/routes/v1/*.js'],
 });
 
+console.log("Writing spec")
 fs.writeFileSync('../generated/swagger.json', JSON.stringify(specs, null, 2));
+console.log("Done writing spec")
+
 
 router.use('/', swaggerUi.serve);
 router.get(

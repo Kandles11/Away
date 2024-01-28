@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type User = {
-    id?: string;
-    email?: string;
-    name?: string;
-    role?: 'user' | 'admin';
+export type Token = {
+    token?: string;
+    expires?: string;
 };
 
