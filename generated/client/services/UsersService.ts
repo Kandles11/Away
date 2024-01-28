@@ -109,7 +109,7 @@ export class UsersService {
         /**
          * User id
          */
-        id: string,
+        id: (string | 'me'),
     }): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'GET',
