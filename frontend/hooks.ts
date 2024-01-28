@@ -1,5 +1,5 @@
-import { AuthTokens, OpenAPI, Token, User } from '../generated/client/';
-import { APIClient } from '../generated/client/APIClient';
+import { AuthTokens, OpenAPI, Token, User } from './generated/client/';
+import { APIClient } from './generated/client/APIClient';
 import { create } from 'zustand'
 import { useMutation, useQuery } from '@tanstack/react-query'
 

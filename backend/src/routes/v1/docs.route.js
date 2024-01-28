@@ -14,7 +14,7 @@ console.log("Writing spec")
 const OpenAPI = require('openapi-typescript-codegen')
 OpenAPI.generate({
   input: specs,
-  output: '../generated/client',
+  output: '../frontend/generated/client',
   httpClient: 'axios',
   useOptions: true,
   useUnionTypes: true,
