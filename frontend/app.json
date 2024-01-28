@@ -31,7 +31,25 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+      "expo-image-picker",
+      {
+        "photosPermission": "The app accesses your photos to let you share them with your friends."
+      }
+    ],
+    [
+      "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+    ],
+    [
+      "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+    ]
     ],
     "experiments": {
       "typedRoutes": true
