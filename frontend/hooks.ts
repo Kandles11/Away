@@ -130,7 +130,7 @@ export const useRegisterMutation = ()=>useMutation({
     },
   })
 
-  export const useUserQuery = (user='me')=>{
+export const useUserQuery = (user='me')=>{
     
     return useQuery({
     queryKey: ['user', user] as const,
@@ -141,6 +141,19 @@ export const useRegisterMutation = ()=>useMutation({
         return res
     },
   })}
+
+  export const getUserBaggage = (user='me')=>{
+    
+    return useQuery({
+    queryKey: ['userBaggage', user] as const,
+    queryFn: async({queryKey})=>{
+        const id = queryKey[1]
+        console.log('use user',{id})
+        const res = await api.baggage.getBaggageUser({user : id})
+        return res
+    },
+  })}
+
 
 
 

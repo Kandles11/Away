@@ -4,17 +4,28 @@ import { Card } from 'tamagui'
 import type { CardProps } from 'tamagui'
 import { Pressable } from 'react-native'
 import { Link, Tabs } from 'expo-router'
-import { useUserQuery } from '../../hooks'
+import { getUserBaggage, useUserQuery } from '../../hooks'
+import { Baggage } from '../../generated/client'
 
 
 export default function TabOneScreen() {
   const { data, isLoading, isError, error } = useUserQuery()
+  const { data: baggageData, isLoading: baggageIsLoading, isError: baggageIsError, error: baggageError } = getUserBaggage(data?.id)
   if (isLoading) {
     return <Text>Loading...</Text>
   }
   if (isError) {
     return <Text>Error: {error?.message}</Text>
   }
+
+  if (baggageIsLoading) {
+    return <Text>Loading...</Text>
+  }
+  if (baggageIsError) {
+    return <Text>Error: {baggageError?.message}</Text>
+  }
+
+
   return (
     <View flex={1} alignItems="center" justifyContent='center'>
       <ScrollView  >
@@ -25,22 +36,24 @@ export default function TabOneScreen() {
             <H2>{data?.name}!</ H2>
           </YStack>
         </YStack>
-
         <H2 margin={18}>Your Bags</H2>
         <ScrollView horizontal={true}>
-          <DemoCard />
-          <DemoCard />
+          {
+            baggageData?.map((baggage) => (
+                <DemoCard key={baggage.id} baggage={baggage}/>
+            )
+            )
+        }
         </ScrollView>
 
         <H2 margin={18}>Your Flights</H2>
-        <DemoCard />
 
       </ScrollView>
     </View>
   )
 }
 
-export function DemoCard(props: CardProps) {
+export function DemoCard(props: {baggage: Baggage}) {
   return (
     <Card elevate size="$4" bordered {...props} margin={18} 
       width={250}
@@ -50,7 +63,7 @@ export function DemoCard(props: CardProps) {
       pressStyle={{ scale: 0.875 }} >
       <Card.Header padded>
         <H3>Boarding Now...</H3>
-        <Paragraph theme="alt2">67963JFS</Paragraph>
+        <Paragraph theme="alt2">{props.baggage.tagData}</Paragraph>
       </Card.Header>
       <Card.Footer padded>
         <XStack flex={1} />
