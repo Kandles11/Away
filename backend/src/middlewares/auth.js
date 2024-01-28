@@ -9,12 +9,11 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
   req.user = user;
-  if (user._id) req.params.userId = user._id
 
   if (requiredRights.length) {
     const userRights = roleRights.get(user.role);
     const hasRequiredRights = requiredRights.every((requiredRight) => userRights.includes(requiredRight));
-    if (!hasRequiredRights &&  ![user._id, 'me'].includes(req.params.userId)) {
+    if (!hasRequiredRights && ![user._id, 'me'].includes(req.params.userId)) {
       return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
     }
   }
