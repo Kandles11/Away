@@ -2,6 +2,7 @@ import { AuthTokens, OpenAPI, Token, User } from './generated/client/';
 import { APIClient } from './generated/client/APIClient';
 import { create } from 'zustand'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { router } from 'expo-router';
 
 const api = new APIClient()
 
@@ -59,25 +60,32 @@ const onAuthComplete = (tokens?: AuthTokens, user?: User) => {
         throw new Error('No tokens returned from login')
     }
     useAppStore.setState({ accessToken: tokens.access, refreshToken: tokens.refresh, user, lastUpdated: new Date() })
-
-        // TODO: router.push to the home page
-        // Also TODO: require auth to be on the home page
-        // index should redirect to login route if there is no token
-        // index should redirect to the home page if there is a token
+    router.push('/')
 }
 
 export const useLoginMutation = ()=> useMutation({
-    mutationFn: api.auth.postAuthLogin,
+    mutationFn: (...args: Parameters<typeof api.auth.postAuthLogin>)=> {
+        console.log({args})
+        return api.auth.postAuthLogin(...args)
+    },
     onSuccess: (res) => {
         onAuthComplete(res.tokens, res.user)
     }
   })
 
+
 export const useRegisterMutation = ()=>useMutation({
-    mutationFn: api.auth.postAuthRegister,
+    // TODO: refactor into a common wrapper function
+    mutationFn: (...args: Parameters<typeof api.auth.postAuthRegister>)=> {
+        console.log({args})
+        return api.auth.postAuthRegister(...args)
+    },
     onSuccess: (res) => {
         console.log({res})
         onAuthComplete(res.tokens, res.user)
+    },
+    onError(error, variables, context) {
+        console.log({error, variables, context})
     },
   })
 
