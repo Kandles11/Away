@@ -9,8 +9,9 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'red',
-        tabBarStyle: {height: 90}
+        tabBarStyle: {height: 90},
+        tabBarActiveTintColor: 'orange',
+        tabBarInactiveTintColor: 'gray',
       }}
     >
       <Tabs.Screen
@@ -23,9 +24,10 @@ export default function TabLayout() {
             borderBottomWidth: 0,
             backgroundColor: 'transparent',
           },
-          tabBarIcon: () => {
+
+          tabBarIcon: ( focused ) => {
             return <YStack alignItems="center" >
-              <Home/>
+              <Home />
               <Text fontSize={10}>Home</Text>
               </YStack>;
           },
@@ -54,7 +56,7 @@ export default function TabLayout() {
         name='pack'
         options={{
           title: '',
-          tabBarIcon: () => {
+          tabBarIcon: ({ focused }) => {
             return <YStack alignItems="center" >
               <Luggage/>
               <Text fontSize={10}>Pack</Text>
