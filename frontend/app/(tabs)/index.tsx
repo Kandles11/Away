@@ -62,7 +62,7 @@ export function DemoCard(props: {baggage: Baggage}) {
       hoverStyle={{ scale: 0.925 }}
       pressStyle={{ scale: 0.875 }} >
       <Card.Header padded>
-        <H3>Boarding Now...</H3>
+        <H3>{props.baggage.status}</H3>
         <Paragraph theme="alt2">{props.baggage.tagData}</Paragraph>
       </Card.Header>
       <Card.Footer padded>

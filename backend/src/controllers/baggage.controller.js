@@ -3,10 +3,10 @@ const catchAsync = require('../utils/catchAsync');
 const Baggage = require('../models/baggage.model');
 
 const createBaggage = catchAsync(async (req, res) => {
-  const { user, tagData } = req.body;
+  const { user, tagData, status } = req.body;
 
   try {
-    const baggage = await Baggage.create({ user, tagData });
+    const baggage = await Baggage.create({ user, tagData, status });
     res.status(200).json(baggage);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -14,10 +14,10 @@ const createBaggage = catchAsync(async (req, res) => {
 });
 
 const updateBaggage = catchAsync(async (req, res) => {
-  const { tagData, claimed } = req.body;
+  const { tagData, claimed, status } = req.body;
 
   const filter = { tagData };
-  const update = { claimed };
+  const update = { claimed, status };
 
   try {
     const baggage = await Baggage.findOneAndUpdate(filter, update, { new: true });

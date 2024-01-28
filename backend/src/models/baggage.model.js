@@ -12,6 +12,11 @@ const baggageSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  status: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 });
 
 baggageSchema.plugin(toJSON);
