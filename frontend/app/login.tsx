@@ -48,9 +48,9 @@ export default function NotFoundScreen() {
       <ToggleGroup.Item value={AuthType.LOGIN}><Text>Login</Text></ToggleGroup.Item>
       <ToggleGroup.Item value={AuthType.REGISTER}><Text>Register</Text></ToggleGroup.Item>
     </ToggleGroup>
-      {currentAuthType === AuthType.REGISTER&&<Input flex={1} value={name} onChangeText={(e)=>setUsername(e)} placeholder={`Username`} />}
-      <Input flex={1} value={email} onChangeText={(e)=>setEmail(e)} placeholder={`Email`} />
-      <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} />
+      {currentAuthType === AuthType.REGISTER&&<Input flex={1} value={name} autoComplete='given-name' onChangeText={(e)=>setUsername(e)} placeholder={`Username`} />}
+      <Input flex={1} value={email} onChangeText={(e)=>setEmail(e)} autoComplete='email' placeholder={`Email`} />
+      <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} autoComplete={currentAuthType===AuthType.LOGIN ? 'current-password' : 'new-password'} secureTextEntry />
       <Form.Trigger asChild>
         <Button >Continue</Button>
       </Form.Trigger>
