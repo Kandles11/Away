@@ -1,7 +1,7 @@
 import { Link, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { View, Text, Form, Input, YStack, Button, ToggleGroup } from 'tamagui'
+import { View, Text, Form, Input, YStack, Button, ToggleGroup, Select } from 'tamagui'
 import { useLoginMutation, useRegisterMutation } from '../hooks'
 
 const AuthType = {
@@ -41,13 +41,39 @@ export default function NotFoundScreen() {
       {login.isError && <Text>Login Error: {login.error?.message}</Text>}
       {register.isPending && <Text>Loading....</Text>}
       {login.isPending && <Text>Registering....</Text>}
-      <ToggleGroup disableDeactivation defaultValue={INITIAL_AUTH_TYPE} value={currentAuthType} onValueChange={(d)=>{
+      {/* <ToggleGroup disableDeactivation defaultValue={INITIAL_AUTH_TYPE} value={currentAuthType} onValueChange={(d)=>{
         console.log({d})
         setCurrentAuthType(d as any)}
         } type="single">
       <ToggleGroup.Item value={AuthType.LOGIN}><Text>Login</Text></ToggleGroup.Item>
       <ToggleGroup.Item value={AuthType.REGISTER}><Text>Register</Text></ToggleGroup.Item>
-    </ToggleGroup>
+    </ToggleGroup> */}
+    <Select
+      value={currentAuthType}
+      // defaultValue={INITIAL_AUTH_TYPE}
+      onValueChange={(itemValue) =>
+        setCurrentAuthType(itemValue as any)
+      }>
+        <Select.Trigger>
+      <Select.Value placeholder="Login or register..." />
+    </Select.Trigger>
+        <Select.Content>
+          <Select.Viewport>
+        <Select.Item
+        index={0}
+                      value={AuthType.REGISTER}
+                    >
+                      <Select.ItemText>{AuthType.REGISTER}</Select.ItemText>
+                    </Select.Item>
+        <Select.Item
+        index={1}
+                      value={AuthType.LOGIN}
+                    >
+                      <Select.ItemText>{AuthType.LOGIN}</Select.ItemText>
+                    </Select.Item>
+                    </Select.Viewport>
+        </Select.Content>
+    </Select>
       {currentAuthType === AuthType.REGISTER&&<Input flex={1} value={name} autoComplete='given-name' onChangeText={(e)=>setUsername(e)} placeholder={`Username`} />}
       <Input flex={1} value={email} onChangeText={(e)=>setEmail(e)} autoComplete='email' placeholder={`Email`} />
       <Input flex={1} value={password} onChangeText={(e)=>setPassword(e)} placeholder={`Password`} autoComplete={currentAuthType===AuthType.LOGIN ? 'current-password' : 'new-password'} secureTextEntry />
