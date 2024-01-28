@@ -60,7 +60,7 @@ export const useAppStore = create<State>()(persist(
     version: 1,
     onRehydrateStorage: () => (state?: State) => {
 
-        if (!state) return
+        if (!state || state._hasHydrated) return
         state.setHasHydrated(true)
     }
 }))
